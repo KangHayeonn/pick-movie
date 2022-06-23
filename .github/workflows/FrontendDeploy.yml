@@ -3,12 +3,12 @@ name: Frontend deploy                    # Workflow 이름
 on:                                  # Event 감지
   push:
     branches:
-      - main
+      - develop
     paths:
       - 'Front/**'
   pull_request:
     branches:
-      - main
+      - develop
     paths:
       - 'Front/**'
       

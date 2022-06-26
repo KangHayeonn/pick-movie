@@ -2,7 +2,7 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png" />
 		<HelloWorld msg="Pick Movie App" />
-		<div>Front CI 테스트2 - Directory url SECRETS 로 변경</div>
+		<div>Front CI 테스트2 - Directory url SECRETS 로 변경, pwd 추가</div>
 	</div>
 </template>
 

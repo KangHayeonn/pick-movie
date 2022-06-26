@@ -2,7 +2,7 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png" />
 		<HelloWorld msg="Pick Movie App" />
-		<div>Front CI 테스트2 - build file name change</div>
+		<div>Front CI 테스트2 - build file name change, access key 수정</div>
 	</div>
 </template>
 

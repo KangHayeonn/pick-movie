@@ -2,7 +2,7 @@
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png" />
 		<HelloWorld msg="Pick Movie App" />
-		<div>Front CI 테스트</div>
+		<div>Front CI 테스트2</div>
 	</div>
 </template>
 

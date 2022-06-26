@@ -51,7 +51,7 @@ public class loginController {
         System.out.println("principal : "+principal.getUser().getUsername());
         System.out.println("principal : "+principal.getUser().getPassword());
 
-        return "<h1>user</h1>";
+        return "<h1>user  user</h1>";
     }
 
     // 매니저 혹은 어드민이 접근 가능

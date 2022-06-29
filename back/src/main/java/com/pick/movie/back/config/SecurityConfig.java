@@ -2,6 +2,7 @@ package com.pick.movie.back.config;
 
 import com.pick.movie.back.config.jwt.JwtAuthenticationFilter;
 import com.pick.movie.back.config.jwt.JwtAuthorizationFilter;
+import com.pick.movie.back.repository.RefreshTokenRepository;
 import com.pick.movie.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private CorsConfig corsConfig;
 
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
 
 
     @Override
@@ -37,8 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),refreshTokenRepository))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")

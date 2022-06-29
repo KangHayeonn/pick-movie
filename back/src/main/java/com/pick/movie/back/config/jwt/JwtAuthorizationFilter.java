@@ -6,10 +6,15 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.pick.movie.back.config.auth.PrincipalDetails;
 import com.pick.movie.back.repository.UserRepository;
 import com.pick.movie.back.model.User;
+import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,8 +49,24 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 
         // 토큰 검증 (이게 인증이기 때문에 AuthenticationManager도 필요 없음)
         // 내가 SecurityContext에 집적접근해서 세션을 만들때 자동으로 UserDetailsService에 있는 loadByUsername이 호출됨.
-        String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
-                .getClaim("username").asString();
+
+        String username = null;
+        try {
+            username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
+                    .getClaim("username").asString();
+
+        } catch (JWTVerificationException e) {
+                if(e.getMessage().contains("expired")) {
+                    System.out.println("토큰 시간이 만료됨");
+
+                    response.setStatus(401);
+                    response.getWriter().write("Token Expired ");
+                    return;
+                }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
 
         if(username != null) {
             User user = userRepository.findByUsername(username);

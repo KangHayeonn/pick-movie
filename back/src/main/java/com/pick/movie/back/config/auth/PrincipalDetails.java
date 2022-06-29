@@ -1,6 +1,7 @@
 package com.pick.movie.back.config.auth;
 
 import com.pick.movie.back.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

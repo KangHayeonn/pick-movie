@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.pick.movie.back.config.auth.PrincipalDetails;
+import com.pick.movie.back.dto.JwtDto;
 import com.pick.movie.back.dto.LoginRequestDto;
+import com.pick.movie.back.model.RefreshToken;
+import com.pick.movie.back.repository.RefreshTokenRepository;
+import com.pick.movie.back.repository.UserRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +32,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
+
     private final AuthenticationManager authenticationManager;
+
+    private final RefreshTokenRepository refreshTokenRepository;
+
+
+
+
+    private final ObjectMapper om = new ObjectMapper();
 
     // Authentication 객체 만들어서 리턴 => 의존 : AuthenticationManager
     // 인증 요청시에 실행되는 함수 => /login
@@ -39,7 +51,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println("JwtAuthenticationFilter : 진입");
 
         // request에 있는 username과 password를 파싱해서 자바 Object로 받기
-        ObjectMapper om = new ObjectMapper();
         LoginRequestDto loginRequestDto = null;
         try {
             loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
@@ -74,21 +85,42 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authentication;
     }
 
-    // JWT Token 생성해서 response에 담아주기
+    // JWT Token 생성해서 response에 담아주기  여기가 어차피 로그인 성공이 되면 진입되는곳.
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
         PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
 
-        String jwtToken = JWT.create()
+        System.out.println(JwtProperties.EXPIRATION_TIME);
+        System.out.println(JwtProperties.SECRET);
+
+
+        String jwtAccessToken = JWT.create()
                 .withSubject(principalDetailis.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", principalDetailis.getUser().getId())
                 .withClaim("username", principalDetailis.getUser().getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);
+        String jwtRefreshToken = JWT.create()
+                .withSubject(principalDetailis.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.REFRESH_EXPIRATION_TIME))  //14일로 추가.
+                .withClaim("id", principalDetailis.getUser().getId())
+                .withClaim("username", principalDetailis.getUser().getUsername())
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+
+        JwtDto jwtDto = new JwtDto().builder()
+                        .jwtAccessToken(JwtProperties.TOKEN_PREFIX+jwtAccessToken)
+                        .jwtRefreshToken(JwtProperties.TOKEN_PREFIX+jwtRefreshToken)
+                        .build();
+
+        refreshTokenRepository.save(new RefreshToken(jwtRefreshToken));
+
+
+        String tokensJson = om.writeValueAsString(jwtDto);
+
+        response.addHeader(JwtProperties.REFRESH_HEADER_STRING, tokensJson);        //refresh와 Access 모두 줌.
     }
 
 }

@@ -1,17 +1,32 @@
 package com.pick.movie.back.controller;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pick.movie.back.config.auth.PrincipalDetails;
+import com.pick.movie.back.config.jwt.JwtProperties;
+import com.pick.movie.back.dto.*;
+import com.pick.movie.back.model.RefreshToken;
 import com.pick.movie.back.model.User;
+import com.pick.movie.back.repository.RefreshTokenRepository;
 import com.pick.movie.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpHeaders;
+import java.sql.SQLOutput;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RestController
@@ -20,14 +35,19 @@ import java.util.List;
 public class loginController {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     PasswordEncoder passwordEncoder;
 
+
+    ObjectMapper om = new ObjectMapper();
+
     @Autowired
-    public loginController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public loginController(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenRepository refreshTokenRepository) {
 
         this.userRepository =userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
 
@@ -62,6 +82,54 @@ public class loginController {
     public List<User> users(){
         return userRepository.findAll();
     }
+
+    @GetMapping(path = "reissueAccessToken")
+    public String reissueAccessToken(@RequestHeader Map<String, Object> requestHeader, HttpServletResponse response) throws JsonProcessingException {
+
+        //여기에 토큰을 받아옴. {"jwtAccessToken": "tekslkj", "jwtRefreshToken":"dfjwfwccc"}
+
+        JwtDto jwtDto = om.readValue((String)requestHeader.get("token"), JwtDto.class);
+        System.out.println(jwtDto.toString());
+        String username;
+
+        try {
+            username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtDto.getJwtAccessToken().replace(JwtProperties.TOKEN_PREFIX, ""))
+                    .getClaim("username").asString();
+
+            System.out.println(username);
+
+        } catch (JWTVerificationException e) {
+            System.out.println(e.getMessage());
+            if(e.getMessage().contains("expired")) {    //만료가 되었으니 재발급.
+                RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(   jwtDto.getJwtRefreshToken().replace(JwtProperties.TOKEN_PREFIX, ""))  ;
+                System.out.println(refreshToken.getRefreshToken()+"  "+refreshToken.getCreateDate());
+
+                username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(refreshToken.getRefreshToken())
+                        .getClaim("username").asString();
+
+                User user = userRepository.findByUsername(username);
+
+                String jwtAccessToken = JWT.create()
+                        .withSubject(user.getUsername())
+                        .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
+                        .withClaim("id", user.getId())
+                        .withClaim("username", user.getUsername())
+                        .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+
+                AccessTokenDto accessTokenDto = new AccessTokenDto(JwtProperties.TOKEN_PREFIX+jwtAccessToken);
+
+                String tokensJson = om.writeValueAsString(accessTokenDto);
+
+                response.addHeader(JwtProperties.REFRESH_HEADER_STRING, tokensJson);
+                return "Access token reissued";
+            }
+        }
+
+        response.setStatus(401);
+        return "Access token not Expire";
+    }
+
+
 
     @PostMapping("join")
     public String join(@RequestBody User user) {

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.pick.movie.back.config.auth.PrincipalDetails;
+import com.pick.movie.back.dto.UserDto;
 import com.pick.movie.back.repository.UserRepository;
 import com.pick.movie.back.model.User;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -1,5 +1,6 @@
 package com.pick.movie.back.repository;
 
+import com.pick.movie.back.dto.UserDto;
 import com.pick.movie.back.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

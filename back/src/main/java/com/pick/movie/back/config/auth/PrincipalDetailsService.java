@@ -1,5 +1,6 @@
 package com.pick.movie.back.config.auth;
 
+import com.pick.movie.back.dto.UserDto;
 import com.pick.movie.back.repository.UserRepository;
 import com.pick.movie.back.model.User;
 import lombok.RequiredArgsConstructor;

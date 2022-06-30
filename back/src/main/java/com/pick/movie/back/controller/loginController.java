@@ -13,6 +13,9 @@ import com.pick.movie.back.model.RefreshToken;
 import com.pick.movie.back.model.User;
 import com.pick.movie.back.repository.RefreshTokenRepository;
 import com.pick.movie.back.repository.UserRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,6 +55,12 @@ public class loginController {
 
 
     // 모든 사람이 접근 가능
+    @ApiOperation(value = "HTTP GET EXAMPLE", notes = "GET 요청에 대한 예제 입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버에러"),
+            @ApiResponse(code = 404, message = "찾을 수 없음")
+    })
     @GetMapping("home")
     public String home() {
         return "<h1>home</h1>";

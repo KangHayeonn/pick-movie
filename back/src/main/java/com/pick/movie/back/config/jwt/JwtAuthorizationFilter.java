@@ -6,16 +6,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.pick.movie.back.config.auth.PrincipalDetails;
-import com.pick.movie.back.dto.UserDto;
 import com.pick.movie.back.repository.UserRepository;
 import com.pick.movie.back.model.User;
-import io.jsonwebtoken.ExpiredJwtException;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

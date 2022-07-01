@@ -51,8 +51,10 @@ jobs:
         working-directory: ${{ env.working-directory }}
         
       # Jar 파일 Copy
+      
       - name: Copy Jar
         run: zip -r back *
+        working-directory: ${{ env.working-directory }}
       - name: Copy Jar
         run: cp ./back.zip ./deploy/
         working-directory: ${{ env.working-directory }}

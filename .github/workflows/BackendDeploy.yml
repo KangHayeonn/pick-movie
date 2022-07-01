@@ -78,4 +78,3 @@ jobs:
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=pickmovie-back-bucket,bundleType=zip,key=back.zip \
           --region ap-northeast-2
-        working-directory: ${{ env.working-directory }}

@@ -13,9 +13,7 @@ on:
     branches: [ "test/seunmgmin" ]
     paths:
       - 'back/**'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,7 +21,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    env:
+      working-directory: ./back
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
@@ -33,32 +32,34 @@ jobs:
         with:
           java-version: 1.8
           
-      - name: move to back dir
-        run: cd ./back/
         
       - name: ls command
         run: ls 
-
+        working-directory: ${{ env.working-directory }}
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: ${{ env.working-directory }}
 
       # Build
       - name: Build with Gradle
         run: ./gradlew clean build
+        working-directory: ${{ env.working-directory }}
 
       # 전송할 파일을 담을 디렉토리 생성
       - name: Make Directory for deliver
         run: mkdir -p deploy
-
+        working-directory: ${{ env.working-directory }}
+        
       # Jar 파일 Copy
       - name: Copy Jar
         run: zip -r back *
       - name: Copy Jar
         run: cp ./back.zip ./deploy/
-
+        working-directory: ${{ env.working-directory }}
       # S3 Bucket으로 copy
       - name: Deliver to AWS S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}. 
         run: aws s3 cp --region ap-northeast-2 --acl private ./deploy/back.zip s3://seungmin-springboot-blog/
+        

@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
+
+//aws add
 @SpringBootApplication
 public class BackApplication {
 

@@ -52,9 +52,28 @@ jobs:
         
       # Jar 파일 Copy
       
-      - name: Copy Jar
-        run: zip -r back *
+      
+      - name: mkdir before-deploy
+        run: mkdir -p before-deploy/
         working-directory: ${{ env.working-directory }}
+        
+      - name: copy before-deploy
+        run: cp scripts/*.sh before-deploy/
+        working-directory: ${{ env.working-directory }}
+        
+      - name: copy before-deploy
+        run: cp appspec.yml before-deploy/
+        working-directory: ${{ env.working-directory }}
+      
+      - name: copy before-deploy
+        run: cp build/libs/*.jar before-deploy/
+        working-directory: ${{ env.working-directory }}
+      
+      - name: make zip
+        run: zip -r -qq -j ./back.zip ./before-deploy/
+        working-directory: ${{ env.working-directory }}
+        
+        
       - name: Copy Jar
         run: cp ./back.zip ./deploy/
         working-directory: ${{ env.working-directory }}

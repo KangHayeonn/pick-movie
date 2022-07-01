@@ -34,7 +34,7 @@ jobs:
           java-version: 1.8
           
       - name: move to back dir
-        run: cd back
+        run: cd ./back/
         
       - name: ls command
         run: ls 

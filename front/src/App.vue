@@ -1,7 +1,9 @@
 <template>
-	<div>
+	<div class="app">
 		<AppHeader></AppHeader>
-		<router-view></router-view>
+		<div class="app-contents">
+			<router-view></router-view>
+		</div>
 	</div>
 </template>
 
@@ -12,4 +14,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+@import '@/styles/style.scss';
+.app {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-size: 1.4rem;
+}
+.app-contents {
+	height: calc(100% - 64px - 102px);
+}
+</style>

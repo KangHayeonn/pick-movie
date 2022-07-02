@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>회원가입 페이지</h1>
+		<h1 class="screen_out">회원가입 페이지</h1>
 		<SignupForm></SignupForm>
 	</div>
 </template>

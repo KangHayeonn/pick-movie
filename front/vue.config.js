@@ -6,6 +6,7 @@ module.exports = defineConfig({
 		client: {
 			overlay: false,
 		},
+		/*
 		proxy: {
 			// proxy할 경로
 			'^/api/v1': {
@@ -14,6 +15,6 @@ module.exports = defineConfig({
 				// cross origin 허용
 				changeOrigin: true,
 			},
-		},
+		},*/
 	},
 });

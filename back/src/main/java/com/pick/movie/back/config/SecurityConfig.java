@@ -7,6 +7,7 @@ import com.pick.movie.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(),refreshTokenRepository))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS,"**").permitAll()
                 .antMatchers("/api/v1/reissueAccessToken")
                 .permitAll()
                 .antMatchers("/api/v1/user/**")
@@ -59,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().permitAll();
     }
 
-    //Cors 설정 d
+    //Cors 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

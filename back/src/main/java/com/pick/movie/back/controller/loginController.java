@@ -140,10 +140,10 @@ public class loginController {
 
 
     @PostMapping("join")
-    public String join(@RequestBody User user) {
+    public String join( User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         userRepository.save(user);
-        return "회원가입완료";
+        return "회원가입 완료";
     }
 }

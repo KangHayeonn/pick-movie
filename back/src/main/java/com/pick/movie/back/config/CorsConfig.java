@@ -16,6 +16,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*"); // e.g. http://domain1.com
         config.addAllowedHeader("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedMethod("*");
 
         source.registerCorsConfiguration("/**", config);

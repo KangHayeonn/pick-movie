@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().permitAll();
     }
 
-    //Cors 설정
+    //Cors 설정 d
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

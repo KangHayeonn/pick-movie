@@ -52,9 +52,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -17,7 +17,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
-        config.addAllowedOriginPattern("*");
+        config.addAllowedOrigin("http://localhost:8001");
         config.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","OPTION","DELETE"));
 
         source.registerCorsConfiguration("/**", config);

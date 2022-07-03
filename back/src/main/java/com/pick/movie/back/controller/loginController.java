@@ -150,6 +150,14 @@ public class loginController {
             @ApiResponse(code = 401, message = "이미 존재하는 회원"),
             @ApiResponse(code = 402, message = "비밀번호는영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.")
     })
+
+    @PostMapping("signupTest")
+    public String signupTest(@RequestParam String text){
+        System.out.println(text);
+        return text;
+    }
+
+
     @PostMapping("signup")
     public String signup( SignupDto signupDto,HttpServletResponse response) {
 

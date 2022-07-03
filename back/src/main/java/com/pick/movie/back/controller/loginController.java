@@ -159,7 +159,7 @@ public class loginController {
 
 
     @PostMapping("signup")
-    public String signup( SignupDto signupDto,HttpServletResponse response) {
+    public String signup(@RequestBody SignupDto signupDto,HttpServletResponse response) {
 
         if(signupDto==null){
             response.setStatus(405);

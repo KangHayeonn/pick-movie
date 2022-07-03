@@ -2,6 +2,7 @@ package com.pick.movie.back.model;
 
 import javax.persistence.*;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull
+    @Column(name = "username", unique = true)
     private String username;
     private String password;
     private String roles;

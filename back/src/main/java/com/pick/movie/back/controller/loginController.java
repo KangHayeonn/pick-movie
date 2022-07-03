@@ -13,9 +13,7 @@ import com.pick.movie.back.model.RefreshToken;
 import com.pick.movie.back.model.User;
 import com.pick.movie.back.repository.RefreshTokenRepository;
 import com.pick.movie.back.repository.UserRepository;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -29,6 +27,9 @@ import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @RestController
@@ -137,10 +138,41 @@ public class loginController {
         return "Access token not Expire";
     }
 
+    @ApiOperation(value = "signup", notes = "signup API입니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="username", value ="사용자 ID(email)", required = true),
+            @ApiImplicitParam(name="password", value ="비밀번호", required = true),
+            @ApiImplicitParam(name="tags", value ="태그들", required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버에러"),
+            @ApiResponse(code = 401, message = "이미 존재하는 회원"),
+            @ApiResponse(code = 402, message = "비밀번호는영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.")
+    })
+    @PostMapping("singup")
+    public String singup( SignupDto signupDto,HttpServletResponse response) {
 
+         Optional<User> isUser = Optional.ofNullable(userRepository.findByUsername(signupDto.getUsername()));
 
-    @PostMapping("join")
-    public String join( User user) {
+        System.out.println(signupDto.toString());
+
+         if(isUser.isPresent()){
+             response.setStatus(401);
+             return "이미 존재하는 회원명입니다.";
+         }
+
+        Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+        Matcher passMatcher1 = passPattern1.matcher(signupDto.getPassword());
+
+        if(!passMatcher1.find()){
+            response.setStatus(402);
+            return "비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.";
+        }
+
+        User user = new User();
+        user.setUsername(signupDto.getUsername());
+        user.setPassword(signupDto.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         userRepository.save(user);

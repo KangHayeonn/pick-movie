@@ -153,6 +153,10 @@ public class loginController {
     @PostMapping("signup")
     public String signup( SignupDto signupDto,HttpServletResponse response) {
 
+        if(signupDto==null){
+            response.setStatus(405);
+            return "값이 없습니다.";
+        }
          Optional<User> isUser = Optional.ofNullable(userRepository.findByUsername(signupDto.getUsername()));
 
         System.out.println(signupDto.toString());

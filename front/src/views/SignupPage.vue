@@ -1,9 +1,13 @@
 <template>
-	<div>sign up</div>
+	<div>
+		<h1 class="screen_out">회원가입 페이지</h1>
+		<SignupForm></SignupForm>
+	</div>
 </template>
 
 <script>
-export default {};
+import SignupForm from '../components/auth/SignupForm.vue';
+export default { components: { SignupForm } };
 </script>
 
 <style></style>

@@ -1,0 +1,62 @@
+@import "@/styles/variables/index.scss";
+
+.form-wrapper {
+    background-color: $gray-0;
+    opacity: 0.9;
+    -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 45px 55px;
+}
+.form-wrapper.form-wrapper-sm {
+    max-width: 500px;
+    margin: 100px auto;
+}
+fieldset {
+    color: $gray-100;
+}
+legend {
+    font-size: 33px;
+    margin-bottom: 35px;
+}
+.input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+input {
+    width:450px;
+    height: 55px;
+    background: rgba(227, 225, 225, 0.15);
+    border: none;
+    border-radius: 5px;
+    padding: 0 1.5rem;
+    font-size: 16px;
+    color: $gray-90;
+    margin-top: 15px;
+}
+input::placeholder {
+    color: $gray-35;
+}
+label {
+    display: inline-block;
+    margin-top: 35px;
+}
+.validation-text {
+    margin-left: 30px;
+}
+.warning {
+    font-size: 15px;
+    color: $red-90;
+}
+
+button {
+    width:497px;
+    height: 53px;
+    margin-top:  47px;
+    border-radius: 5px;
+    background-color: $red-80;
+    font-size: 21px;
+    font-weight: 600;
+    color: $gray-100;
+}

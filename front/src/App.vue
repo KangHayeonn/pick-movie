@@ -1,15 +1,28 @@
 <template>
-	<div>
-		<header>
-			<router-link to="/login">로그인</router-link> |
-			<router-link to="/signup">회원가입</router-link>
-		</header>
-		<router-view></router-view>
+	<div class="app">
+		<AppHeader></AppHeader>
+		<div class="app-contents">
+			<router-view></router-view>
+		</div>
 	</div>
 </template>
 
 <script>
-export default {};
+import AppHeader from '@/components/layouts/AppHeader.vue';
+export default {
+	components: { AppHeader },
+};
 </script>
 
-<style></style>
+<style lang="scss">
+@import '@/styles/style.scss';
+.app {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-size: 1.4rem;
+}
+.app-contents {
+	height: calc(100% - 64px - 102px);
+}
+</style>

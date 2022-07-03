@@ -1,0 +1,61 @@
+<template>
+	<div class="contents">
+		<div class="form-wrapper form-wrapper-sm">
+			<form @submit.prevent="submitForm">
+				<div>
+					<label for="username">id : </label>
+					<input id="username" type="text" v-model="username" />
+				</div>
+				<div>
+					<label for="password">pw : </label>
+					<input id="password" type="text" v-model="password" />
+				</div>
+				<button :disabled="!isUsernameValid || !password" type="submit">
+					로그인
+				</button>
+				<p>{{ logMessage }}</p>
+			</form>
+		</div>
+	</div>
+</template>
+
+<script>
+import { loginUser } from '@/api/index';
+import { validateEmail } from '@/utils/validation';
+
+export default {
+	data() {
+		return {
+			// form values
+			username: '',
+			password: '',
+			// log
+			logMessage: '',
+		};
+	},
+	computed: {
+		isUsernameValid() {
+			return validateEmail(this.username);
+		},
+	},
+	methods: {
+		async submitForm() {
+			const userData = {
+				username: this.username,
+				password: this.password,
+			};
+			const { data } = await loginUser(userData);
+			console.log(data);
+			this.logMessage = `${data.user.username}님 환영합니다.`;
+		},
+		initFrom() {
+			this.username = '';
+			this.password = '';
+		},
+	},
+};
+</script>
+
+<style lang="scss">
+@import './scss/style.scss';
+</style>

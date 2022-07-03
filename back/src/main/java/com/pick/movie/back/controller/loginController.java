@@ -152,9 +152,9 @@ public class loginController {
     })
 
     @PostMapping("signupTest")
-    public String signupTest(@RequestParam String text){
-        System.out.println(text);
-        return text;
+    public String signupTest(@RequestBody String param){
+        System.out.println(param);
+        return param;
     }
 
 

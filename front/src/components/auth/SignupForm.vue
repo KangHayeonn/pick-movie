@@ -4,13 +4,14 @@
 			<form @submit.prevent="submitForm">
 				<fieldset>
 					<legend>Sign Up | 회원가입</legend>
-					<div class="input-form">
+					<div>
 						<label for="username" class="screen_out">id: </label>
 						<input
 							id="username"
 							type="text"
 							v-model="username"
 							placeholder="이메일 주소"
+							class="form-input"
 						/>
 					</div>
 					<p class="validation-text">
@@ -23,6 +24,7 @@
 							type="text"
 							v-model="password"
 							placeholder="비밀번호"
+							class="form-input"
 						/>
 					</div>
 					<div>
@@ -32,18 +34,20 @@
 							type="text"
 							v-model="passwordCheck"
 							placeholder="비밀번호 확인"
+							class="form-input"
 						/>
 					</div>
 					<p class="validation-text">
 						<span class="warning"> 비밀번호가 다릅니다. </span>
 					</p>
-					<div>
+					<div class="input-form">
 						<label for="password">관심 분야</label>
 						<input
 							id="password"
 							type="text"
 							v-model="interests"
 							placeholder="관심 분야 추가"
+							class="form-input"
 						/>
 					</div>
 					<button type="submit">회원가입</button>

@@ -71,15 +71,18 @@ export default {
 	},
 	methods: {
 		async submitForm() {
-			const userData = {
-				username: this.username,
-				password: this.password,
-				role: 'user',
-			};
-			const response = await registerUser(userData);
-			console.log(response);
-			this.logMessage = `${response.data.username} 님이 가입되었습니다`;
-			this.initForm();
+			try {
+				const userData = {
+					username: this.username,
+					password: this.password,
+					tags: ['호러', '로맨스'],
+				};
+				const { data } = await registerUser(userData);
+				this.logMessage = `${data}`;
+				this.initForm();
+			} catch (error) {
+				console.log(error);
+			}
 		},
 		initForm() {
 			this.username = '';

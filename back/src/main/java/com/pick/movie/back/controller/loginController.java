@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLOutput;
 import java.util.Date;
@@ -44,6 +45,9 @@ public class loginController {
 
 
     ObjectMapper om = new ObjectMapper();
+
+
+
 
     @Autowired
     public loginController(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenRepository refreshTokenRepository) {
@@ -80,16 +84,21 @@ public class loginController {
         return "<h1>user  user</h1>";
     }
 
-    // 매니저 혹은 어드민이 접근 가능
-    @GetMapping("manager/reports")
-    public String reports() {
-        return "<h1>reports</h1>";
-    }
 
-    // 어드민이 접근 가능
-    @GetMapping("admin/users")
-    public List<User> users(){
-        return userRepository.findAll();
+    @ApiOperation(value = "login", notes = "login API입니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="username", value ="사용자 ID(email)", required = true),
+            @ApiImplicitParam(name="password", value ="비밀번호", required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버에러"),
+            @ApiResponse(code = 401, message = "토큰 시간이 만료됨."),
+            @ApiResponse(code = 402, message = "비밀번호는영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.")
+    })
+    @PostMapping("/login")
+    public String login(@RequestBody HttpServletRequest request){
+        return "스웨거 명세를 위한 api";
     }
 
     @GetMapping(path = "reissueAccessToken")
@@ -150,14 +159,6 @@ public class loginController {
             @ApiResponse(code = 401, message = "이미 존재하는 회원"),
             @ApiResponse(code = 402, message = "비밀번호는영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.")
     })
-
-    @PostMapping("signupTest")
-    public String signupTest(@RequestBody String param){
-        System.out.println(param);
-        return param;
-    }
-
-
     @PostMapping("signup")
     public String signup(@RequestBody SignupDto signupDto,HttpServletResponse response) {
 

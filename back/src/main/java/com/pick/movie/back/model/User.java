@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "USER_ID")
     private long id;
 
     @NotNull
@@ -22,6 +24,11 @@ public class User {
     private String username;
     private String password;
     private String roles;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<HashtagRelation> hashtagRelation = new ArrayList<HashtagRelation>();
+
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList(){

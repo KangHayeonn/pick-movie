@@ -40,15 +40,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager(), refreshTokenRepository);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login"); //login 필터 강제 변경.
+
         http
                 .cors().and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-                //
-                // .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(),refreshTokenRepository))
+                .httpBasic().disable()
+
+                .addFilter(jwtAuthenticationFilter)
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"**").permitAll()

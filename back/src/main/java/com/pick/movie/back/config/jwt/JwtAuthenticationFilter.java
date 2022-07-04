@@ -17,6 +17,7 @@ import com.pick.movie.back.dto.LoginRequestDto;
 import com.pick.movie.back.model.RefreshToken;
 import com.pick.movie.back.repository.RefreshTokenRepository;
 import com.pick.movie.back.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,14 +29,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
 
+    @Autowired
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private final UserRepository userRepository;
 
 
 
@@ -77,6 +85,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // Tip: 인증 프로바이더의 디폴트 서비스는 UserDetailsService 타입
         // Tip: 인증 프로바이더의 디폴트 암호화 방식은 BCryptPasswordEncoder
         // 결론은 인증 프로바이더에게 알려줄 필요가 없음.
+
+        if(userRepository.findByUsername(loginRequestDto.getUsername())==null){
+            //response.getWriter().write("아이디가 없음");
+        }
+
+
         Authentication authentication =
                 authenticationManager.authenticate(authenticationToken);
 
@@ -117,10 +131,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         refreshTokenRepository.save(new RefreshToken(jwtRefreshToken));
 
-
         String tokensJson = om.writeValueAsString(jwtDto);
 
-        response.addHeader(JwtProperties.REFRESH_HEADER_STRING, tokensJson);        //refresh와 Access 모두 줌.
+        response.getWriter().write(tokensJson);
+
+        //response.addHeader(JwtProperties.REFRESH_HEADER_STRING, tokensJson);        //refresh와 Access 모두 줌. header대신 바디에 줌.
     }
 
 }

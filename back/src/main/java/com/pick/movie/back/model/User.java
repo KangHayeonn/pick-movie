@@ -4,15 +4,17 @@ import javax.persistence.*;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
 @Data
-public class User {
+@Entity
+@EqualsAndHashCode(callSuper=false)
+public class User extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,9 +27,11 @@ public class User {
     private String password;
     private String roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<HashtagRelationUser> hashtagRelation = new ArrayList<HashtagRelationUser>();
 
     @OneToMany(mappedBy = "user")
-    private List<HashtagRelation> hashtagRelation = new ArrayList<HashtagRelation>();
+    private List<LikeList> likeLists = new ArrayList<LikeList>();
 
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!

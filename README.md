@@ -95,18 +95,22 @@ Vue, JavaScript, Vuex 를 이용해 Front-end 개발
 ### 🔅 코드 컨벤션
 |  **항목**  |    **규칙**      |
 | ---------- | ---------------- |
-| Directory  | -                |
-| File       | -                |
+| Directory  | camelCase        |
+| File       | PascalCase       |
+| Constant   | SNAKE_CASE       |
+| Variable   | camelCase        |
+| Function   | camelCase        |
 
 
 ### ✔ 추가 라이브러리 & 버전 정보
 
 |  **항목**  |  **버전 정보**  |
 | ---------- | ---------------- |
-| Node       | -                |
-| Vue        | -                |
-| Vuex       | -                |
-| Axios      | -                |
+| Node       | v12              |
+| Vue        | v2.6.14          |
+| Vuex       | v3.6.2           |
+| Axios      | v0.27.2          |
+| Sass       | v1.53.0          |
 
 
 <br>

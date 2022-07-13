@@ -252,6 +252,18 @@ public class loginController {
 
         for (int i = 0; i < tagSize; i++) {
             Optional<TagList> byTag = Optional.ofNullable(tagRepository.findByTag(tags.get(i)));
+//
+//            if(byTag.isPresent()){
+//                TagList tag = byTag.get();
+//                HashtagRelationUser hashtagRelationUser = new HashtagRelationUser();
+//                hashtagRelationUser.setUser(user);
+//                hashtagRelationUser.setTag(tag);
+//                hashtagRelationUserRepository.save(hashtagRelationUser);
+//            }else{
+//                response.setStatus(201);
+//            }
+
+            // java 11 이 하단. 지원하지 않으면 위 소스로 진행.
 
             byTag.ifPresentOrElse(tag ->{
                 HashtagRelationUser hashtagRelationUser = new HashtagRelationUser();

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -38,17 +39,16 @@ public class GetMovieInfo {
     }
 
     @GetMapping("/go")
-    public String goAction() throws Exception{
-        go();
+    public String goAction(@RequestParam int page) throws Exception{
+        go(page);
         return "<h1>home</h1>";
     }
 
 
-    public void go() throws Exception {
-        for (int i = 1; i <= 1; i++) {
+    public void go(int page) throws Exception {
+        for (int i = 1; i <= page; i++) {
             getUpdate(20,i);
         }
-
     }
 
     public void getUpdate(int limit, int page) throws Exception{

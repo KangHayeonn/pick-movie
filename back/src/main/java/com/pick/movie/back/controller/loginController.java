@@ -111,8 +111,6 @@ public class loginController {
         return json;
     }
 
-
-
     @ApiOperation(value = "login", notes = "login API입니다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name="username", value ="사용자 ID(email)", required = true),

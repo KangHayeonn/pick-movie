@@ -36,7 +36,7 @@
 
 <script>
 import { loginUser } from '@/api/index';
-import { validateEmail } from '@/utils/validation';
+// import { validateEmail } from '@/utils/validation';
 
 export default {
 	data() {
@@ -49,9 +49,10 @@ export default {
 		};
 	},
 	computed: {
+		/*
 		isUsernameValid() {
-			return validateEmail(this.username);
-		},
+			// return validateEmail(this.username);
+		},*/
 	},
 	methods: {
 		async submitForm() {

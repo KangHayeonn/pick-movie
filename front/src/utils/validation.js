@@ -1,7 +1,1 @@
-function validateEmail(email) {
-	const re =
-		/^(([^<>()[\]\\.,;:\s@\\"]+(\.[^<>()[\]\\.,;:\s@\\"]+)*)|(\\".+\\"))@(([^<>()[\]\\.,;:\s@\\"]+\.)+[^<>()[\]\\.,;:\s@\\"]{2,})$/i;
-	return re.test(String(email).toLowerCase());
-}
-
-export { validateEmail };
+// ReDoS 에 취약한 문제 때문에 삭제

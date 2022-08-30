@@ -39,3 +39,8 @@ out/
 
 application.properties
 application-real.properties
+
+.DS_Store
+
+/images/
+images/

@@ -10,4 +10,7 @@ import java.util.List;
 public interface MovieInfoRepository extends JpaRepository<MovieInfo,Long> {
     MovieInfo findByTitle(String title);
     List<MovieInfo> findByTitleContains(String title);
+
+    List<MovieInfo> findAll();
+
 }

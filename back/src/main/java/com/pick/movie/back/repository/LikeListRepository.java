@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LikeListRepository extends JpaRepository<LikeList,Long> {
+    //LikeList findByUserIdAndMovieId(long userId, long movieId);
 }

@@ -1,12 +1,12 @@
-const { defineConfig } = require('@vue/cli-service');
+const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-	transpileDependencies: true,
-	devServer: {
-		port: 8001,
-		client: {
-			overlay: false,
-		},
-		/*
+  transpileDependencies: true,
+  devServer: {
+    port: 8000,
+    client: {
+      overlay: false,
+    },
+    /*
 		proxy: {
 			// proxy할 경로
 			'^/api/v1': {
@@ -16,5 +16,5 @@ module.exports = defineConfig({
 				changeOrigin: true,
 			},
 		},*/
-	},
-});
+  },
+})

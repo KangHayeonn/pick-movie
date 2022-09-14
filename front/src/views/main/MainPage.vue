@@ -14,7 +14,11 @@
 </template>
 
 <script>
+import Checkbox from 'vue-material-checkbox'
 export default {
+  components: {
+    Checkbox,
+  },
   methods: {
     clickSignUp() {
       this.$router.push('/signup')

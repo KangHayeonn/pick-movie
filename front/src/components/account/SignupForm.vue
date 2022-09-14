@@ -15,7 +15,7 @@
             />
           </div>
           <p class="validation-text">
-            <span class="warning"> 중복 아이디가 있습니다. </span>
+            <span class="warning">중복 아이디가 있습니다.</span>
           </p>
           <div>
             <label for="password" class="screen_out">비밀번호: </label>
@@ -38,12 +38,12 @@
             />
           </div>
           <p class="validation-text">
-            <span class="warning"> 비밀번호가 다릅니다. </span>
+            <span class="warning">비밀번호가 다릅니다.</span>
           </p>
           <div class="input-form">
-            <label for="password">관심 분야</label>
+            <label for="interest" class="title">관심 분야</label>
             <input
-              id="password"
+              id="interest"
               type="text"
               v-model="interests"
               placeholder="관심 분야 추가"

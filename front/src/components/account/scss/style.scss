@@ -37,7 +37,7 @@ legend {
 .form-input::placeholder {
     color: $gray-35;
 }
-label {
+.title {
     display: inline-block;
     margin-top: 35px;
 }
@@ -48,7 +48,6 @@ label {
     font-size: 15px;
     color: $red-90;
 }
-
 button {
     width:397px;
     height: 53px;

@@ -1,33 +1,60 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
-export default new VueRouter({
-	mode: 'history',
-	routes: [
-		{
-			path: '/',
-			redirect: '/login',
-		},
-		{
-			path: '/login',
-			component: () => import('@/views/LoginPage.vue'),
-			name: 'login',
-		},
-		{
-			path: '/signup',
-			component: () => import('@/views/SignupPage.vue'),
-			name: 'signup',
-		},
-		{
-			path: '/main',
-			component: () => import('@/views/MainPage.vue'),
-			name: 'main',
-		},
-		{
-			path: '*',
-			component: () => import('@/views/NotFoundPage.vue'),
-		},
-	],
-});
+const router = new VueRouter({
+  mode: 'history',
+  scrollBehavior: () => {
+    return { x: 0, y: 0 }
+  },
+  routes: [
+    {
+      path: '*',
+      redirect: '/',
+    },
+    {
+      path: '/',
+      name: 'Container',
+      component: () => import('@/layouts/Container.vue'),
+      redirect: { name: 'Main' },
+      children: [
+        {
+          path: '/login',
+          name: 'Login',
+          component: () => import('@/views/account/LoginPage.vue'),
+        },
+        {
+          path: '/signup',
+          name: 'Signup',
+          component: () => import('@/views/account/SignupPage.vue'),
+        },
+        {
+          path: '/main',
+          name: 'Main',
+          component: () => import('@/views/main/MainPage.vue'),
+          meta: { group: 'Main', auth: true },
+        },
+      ],
+    },
+    {
+      path: '/error',
+      name: 'Error',
+      component: () => import('@/views/error/NotFoundPage.vue'),
+    },
+  ],
+})
+
+// router navigation guard
+/*
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth) {
+    next('/login')
+    console.log('인증이 필요합니다.')
+    // next를 하고 다음 next를 하는 불필요한 호출이 생길 수 있기 때문
+    return
+  }
+  next()
+})*/
+
+export default router

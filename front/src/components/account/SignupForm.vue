@@ -7,11 +7,13 @@
           <div>
             <label for="username" class="screen_out">id: </label>
             <input
-              id="username"
               type="text"
+              id="username"
+              name="username"
               v-model="username"
               placeholder="이메일 주소"
               class="form-input"
+              autocomplete="off"
             />
           </div>
           <p class="validation-text">
@@ -21,13 +23,15 @@
             <span class="warning">정확한 이메일 주소를 입력하세요.</span>
           </p>
           <div>
-            <label for="password" class="screen_out">비밀번호: </label>
+            <label for="pw" class="screen_out">비밀번호: </label>
             <input
-              id="password"
               type="text"
+              id="pw"
+              name="pw"
               v-model="password"
               placeholder="비밀번호"
               class="form-input"
+              autocomplete="off"
             />
           </div>
           <p class="validation-text">
@@ -36,13 +40,15 @@
             </span>
           </p>
           <div>
-            <label for="password" class="screen_out">비밀번호 확인: </label>
+            <label for="pwChk" class="screen_out">비밀번호 확인: </label>
             <input
-              id="password"
               type="text"
+              id="pwChk"
+              name="pwChk"
               v-model="passwordCheck"
               placeholder="비밀번호 확인"
               class="form-input"
+              autocomplete="off"
             />
           </div>
           <p class="validation-text">

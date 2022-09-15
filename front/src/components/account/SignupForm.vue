@@ -49,7 +49,7 @@
             <span class="warning">비밀번호가 다릅니다.</span>
           </p>
           <div class="input-form">
-            <label for="interest" class="title">관심 분야</label>
+            <label for="interest" class="tit-interest">관심 분야</label>
             <div class="list-form">
               <div class="item-chip">
                 <span class="tit-chip">#공포</span>

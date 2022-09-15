@@ -29,6 +29,6 @@ export default {
 
 <style scoped lang="scss">
 .container-doc {
-  min-width: 650px;
+  min-width: 690px;
 }
 </style>

@@ -5,29 +5,49 @@
         <fieldset>
           <legend>Sign In | 로그인</legend>
           <div>
-            <label for="username" class="screen_out">id : </label>
+            <label for="id" class="screen_out">id : </label>
             <input
-              id="username"
               type="text"
+              id="id"
+              name="id"
               v-model="username"
               placeholder="이메일 주소"
               class="form-input"
+              autocomplete="off"
             />
           </div>
           <div>
-            <label for="password" class="screen_out">pw : </label>
+            <label for="pw" class="screen_out">pw : </label>
             <input
-              id="password"
-              type="text"
+              type="password"
+              id="pw"
+              name="pw"
               v-model="password"
               placeholder="비밀번호"
               class="form-input"
+              autocomplete="off"
             />
           </div>
-          <button :disabled="!isUsernameValid || !password" type="submit">
+          <button
+            type="submit"
+            class="submit-btn"
+            :disabled="!isUsernameValid || !password"
+          >
             로그인
           </button>
+          <div class="item-choice">
+            <Checkbox
+              id="check"
+              v-model="someVar"
+              color="#828282"
+              :fontSize="14"
+              :value="34"
+            >
+              로그인 정보 저장
+            </Checkbox>
+          </div>
           <p>{{ logMessage }}</p>
+          <div class="link-wrapper">회원이 아니신가요?</div>
         </fieldset>
       </form>
     </div>
@@ -36,9 +56,14 @@
 
 <script>
 import { loginUser } from '@/api/index'
+import Checkbox from 'vue-material-checkbox'
 // import { validateEmail } from '@/utils/validation';
 
 export default {
+  name: 'LoginForm',
+  components: {
+    Checkbox,
+  },
   data() {
     return {
       // form values

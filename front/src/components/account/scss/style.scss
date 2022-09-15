@@ -1,5 +1,35 @@
 @import "@/styles/variables/index.scss";
 
+$sqrt_2: 1.41421356237;
+
+// X icon SCSS mixin
+@mixin iconCancel($size: 8px, $thick: 1px, $color: #969696, $padding: 0, $display: inline-block, $position: relative) {
+	position: $position;
+	display: $display;
+	width: $size + $padding*2;
+	height: $size + $padding*2;
+
+	&:before, &:after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: round($size*$sqrt_2 - $thick);
+		height: $thick;
+		background-color: $color;
+	}
+
+	&:before {
+		-webkit-transform: translate(-50%, -50%) rotate(45deg);
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	&:after {
+		-webkit-transform: translate(-50%, -50%) rotate(135deg);
+		transform: translate(-50%, -50%) rotate(135deg);
+	}
+}
+
 .form-wrapper {
     background-color: $gray-0;
     opacity: 0.9;
@@ -37,7 +67,7 @@ legend {
 .form-input::placeholder {
     color: $gray-35;
 }
-label {
+.title {
     display: inline-block;
     margin-top: 35px;
 }
@@ -48,8 +78,7 @@ label {
     font-size: 15px;
     color: $red-90;
 }
-
-button {
+.submit-btn {
     width:397px;
     height: 53px;
     margin-top:  47px;
@@ -58,4 +87,117 @@ button {
     font-size: 21px;
     font-weight: 600;
     color: $gray-100;
+}
+.item-choice {
+    font-size: 14px;
+    color: #e4e4e4;
+}
+.m-chckbox--group {
+    border: 2px solid #828282;
+}
+.link-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 54px;
+    font-size: 17px;
+}
+
+.icon-cancel { 
+    @include iconCancel(); 
+}
+
+// 관심 분야
+.list-form {
+    display: flex;
+    flex-flow: row wrap;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #c4c4c4;
+}
+.item-chip {
+    display: inline;
+    width: auto;
+    background-color: #e4e4e4;
+    font-size: 13px;
+    font-weight: 500;
+    color: #100f0f;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 20px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 3px 14px 3px 16px;
+}
+.tit-chip {
+    margin-right: 11px;
+}
+.dropdown .dropdown-input[data-v-6149e08a] {
+    width: 350px;
+    height: 55px;
+    background: rgba(227, 225, 225, 0.15);
+    border: none;
+    border-radius: 5px;
+    padding: 0 1.3rem;
+    font-size: 16px;
+    color: $gray-90;
+    margin-top: 15px;
+    max-width: 350px;
+}
+.dropdown .dropdown-input[data-v-6149e08a]::placeholder {
+    color: $gray-35;
+}
+.dropdown .dropdown-input[data-v-6149e08a]:hover {
+    background: rgba(227, 225, 225, 0.15);
+}
+.dropdown .dropdown-content[data-v-6149e08a] {
+    width: 393px;
+    position: absolute;
+    top: 79px;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: #222222;
+    min-width: 248px;
+    max-width: 400px;
+    max-height: 168px;
+    border: 1px solid #e7ecf5;
+    border-radius: 4px;
+    box-shadow: 0px -8px 34px 0px rgb(0 0 0 / 5%);
+    overflow: auto;
+    margin-left: -2px;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #c4c4c4;
+      border-radius: 12px;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
+    &::-webkit-scrollbar-track {
+      background: #222222;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px #222222;
+    }
+}
+.dropdown .dropdown-content .dropdown-item[data-v-6149e08a] {
+    color: #fff;
+    font-size: 0.7em;
+    font-weight: 400;
+    line-height: 2em;
+    padding: 8px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    padding: 8px 1.3rem;
+}
+.dropdown .dropdown-content .dropdown-item[data-v-6149e08a]:hover {
+    background: rgba(227, 225, 225, 0.22);
+}
+.signup-btn {
+    margin-bottom: 2.5em;
+}
+
+.tit-interest {
+    margin-top: 1.5em;
+    margin-bottom: 10px;
 }

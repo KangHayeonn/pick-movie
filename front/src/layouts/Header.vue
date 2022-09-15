@@ -7,6 +7,7 @@
         class="logo-img"
       />
     </router-link>
+    <Navigator />
     <button
       v-if="loginCheck()"
       type="button"
@@ -19,7 +20,10 @@
 </template>
 
 <script>
+import Navigator from './Navigator.vue'
 export default {
+  name: 'Header',
+  components: { Navigator },
   data() {
     return {
       images: 'Logo.png',

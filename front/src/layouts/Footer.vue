@@ -22,7 +22,10 @@
 
 <script>
 import SearchForm from '../components/common/SearchForm.vue'
-export default { components: { SearchForm } }
+export default {
+  name: 'Footer',
+  components: { SearchForm },
+}
 </script>
 
 <style scoped lang="scss">

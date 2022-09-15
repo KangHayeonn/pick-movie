@@ -16,9 +16,6 @@
               autocomplete="off"
             />
           </div>
-          <p class="validation-text">
-            <span class="warning">정확한 이메일 주소를 입력하세요.</span>
-          </p>
           <div>
             <label for="pw" class="screen_out">pw : </label>
             <input
@@ -31,12 +28,11 @@
               autocomplete="off"
             />
           </div>
-          <p class="validation-text">
-            <span class="warning">
-              영문과 특수문자 숫자를 포함하며 8자 이상이여야 합니다.
-            </span>
-          </p>
-          <button type="submit" :disabled="!isUsernameValid || !password">
+          <button
+            type="submit"
+            class="submit-btn"
+            :disabled="!isUsernameValid || !password"
+          >
             로그인
           </button>
           <div class="item-choice">
@@ -108,20 +104,4 @@ export default {
 
 <style lang="scss">
 @import './scss/style.scss';
-.item-choice {
-  font-size: 14px;
-  color: #e4e4e4;
-}
-.m-chckbox--group {
-  border: 2px solid #828282;
-}
-.link-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 54px;
-  font-size: 17px;
-}
-input:invalid {
-  border-color: red;
-}
 </style>

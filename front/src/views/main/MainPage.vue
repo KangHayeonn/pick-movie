@@ -15,11 +15,21 @@
 
 <script>
 export default {
+  name: 'Main',
+  components: {},
+  props: {},
+  data() {
+    return {}
+  },
+  created() {},
+  computed: {},
+  watch: {},
   methods: {
     clickSignUp() {
       this.$router.push('/signup')
     },
   },
+  mounted() {},
 }
 </script>
 

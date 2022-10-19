@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { getAccessToken } from '@/plugins/tokenControl'
 
 Vue.use(VueRouter)
 
@@ -23,17 +24,55 @@ const router = new VueRouter({
           path: '/login',
           name: 'Login',
           component: () => import('@/views/account/LoginPage.vue'),
+          beforeEnter(to, from, next) {
+            if (getAccessToken()) {
+              next({ name: 'Main' })
+            } else {
+              next()
+            }
+          },
         },
         {
           path: '/signup',
           name: 'Signup',
           component: () => import('@/views/account/SignupPage.vue'),
+          beforeEnter(to, from, next) {
+            if (getAccessToken()) {
+              next({ name: 'Login' })
+            } else {
+              next()
+            }
+          },
         },
         {
           path: '/main',
           name: 'Main',
           component: () => import('@/views/main/MainPage.vue'),
           meta: { group: 'Main', auth: true },
+        },
+        {
+          path: '/cart',
+          name: 'Cart',
+          component: () => import('@/views/cart/CartPage.vue'),
+          meta: { auth: true },
+        },
+        {
+          path: '/posts',
+          name: 'Posts',
+          component: () => import('@/views/posts/PostsPage.vue'),
+          meta: { auth: true },
+        },
+        {
+          path: '/profile',
+          name: 'Profile',
+          component: () => import('@/views/profile/ProfilePage.vue'),
+          meta: { auth: true },
+        },
+        {
+          path: '/search',
+          name: 'Search',
+          component: () => import('@/views/search/SearchPage.vue'),
+          meta: { auth: true },
         },
       ],
     },

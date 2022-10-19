@@ -15,7 +15,7 @@ function registerUser(userData) {
 }
 
 function loginUser(userData) {
-  return instance.post('/login', userData)
+  return instance.post('/api/v1/login', userData)
 }
 
 export { registerUser, loginUser, callHome }

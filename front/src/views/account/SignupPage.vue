@@ -7,5 +7,19 @@
 
 <script>
 import SignupForm from '@/components/account/SignupForm.vue'
-export default { components: { SignupForm } }
+export default {
+  name: 'Signup',
+  components: {
+    SignupForm,
+  },
+  props: {},
+  data() {
+    return {}
+  },
+  created() {},
+  computed: {},
+  watch: {},
+  methods: {},
+  mounted() {},
+}
 </script>

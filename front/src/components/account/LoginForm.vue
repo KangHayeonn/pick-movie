@@ -47,7 +47,11 @@
             </Checkbox>
           </div>
           <p>{{ logMessage }}</p>
-          <div class="link-wrapper">회원이 아니신가요?</div>
+          <div class="link-wrapper">
+            <button type="button" class="btn-link" @click="goSignup">
+              회원이 아니신가요?
+            </button>
+          </div>
         </fieldset>
       </form>
     </div>
@@ -97,6 +101,9 @@ export default {
     initForm() {
       this.username = ''
       this.password = ''
+    },
+    goSignup() {
+      this.$router.push({ name: 'Signup' })
     },
   },
 }

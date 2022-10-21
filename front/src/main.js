@@ -13,6 +13,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
-  store,
+  store, // v3.6.2 버전 사용해야함 (vue2)
   render: h => h(App),
 }).$mount('#app')

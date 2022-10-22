@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { registerUser } from '@/api/index'
+import { registerUser, getTags } from '@/api/index'
 import Dropdown from 'vue-simple-search-dropdown'
 import { _isValidEmail, _isValidPassword } from '@/utils/validation'
 
@@ -131,6 +131,19 @@ export default {
       isPwdChkError: false,
       errorMessage: '',
     }
+  },
+  async created() {
+    const result = await getTags()
+    const tmpArr = []
+
+    result.data.forEach(e => {
+      tmpArr.push({
+        id: e.id,
+        name: e.tag,
+      })
+    })
+
+    this.interestOptions = [...tmpArr]
   },
   watch: {
     username: {

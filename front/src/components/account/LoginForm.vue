@@ -61,7 +61,7 @@
 <script>
 import { loginUser } from '@/api/index'
 import Checkbox from 'vue-material-checkbox'
-// import { validateEmail } from '@/utils/validation';
+import { _isValidEmail, _isValidPassword } from '@/utils/validation'
 
 export default {
   name: 'LoginForm',
@@ -75,13 +75,21 @@ export default {
       password: '',
       // log
       logMessage: '',
+      someVar: false,
     }
   },
   computed: {
-    /*
-          isUsernameValid() {
-              // return validateEmail(this.username);
-          },*/
+    isUsernameValid() {
+      return _isValidEmail(this.username)
+    },
+  },
+  watch: {
+    someVar: {
+      deep: true,
+      handler() {
+        console.log(this.someVar)
+      },
+    },
   },
   methods: {
     async submitForm() {

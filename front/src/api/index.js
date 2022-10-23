@@ -18,4 +18,8 @@ function loginUser(userData) {
   return instance.post('/api/v1/login', userData)
 }
 
-export { registerUser, loginUser, callHome }
+function getTags() {
+  return instance.get('/api/v1/showtags')
+}
+
+export { registerUser, loginUser, callHome, getTags }

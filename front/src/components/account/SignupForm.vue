@@ -76,6 +76,8 @@
             <Dropdown
               :options="interestOptions"
               v-on:selected="validateSelection"
+              v-on:filter="getDropdownValues"
+              name="new"
               :disabled="false"
               :maxItem="20"
               placeholder="관심 분야 추가"
@@ -91,7 +93,7 @@
 </template>
 
 <script>
-import { registerUser } from '@/api/index'
+import { registerUser, getTags } from '@/api/index'
 import Dropdown from 'vue-simple-search-dropdown'
 import { _isValidEmail, _isValidPassword } from '@/utils/validation'
 
@@ -108,23 +110,11 @@ export default {
       interests: [],
       // log
       logMessage: '',
-      selected: {},
+      selected: { id: null, name: null },
       filter: '',
       interestOptions: [
         { id: 1, name: '액션' },
         { id: 2, name: '범죄' },
-        { id: 3, name: 'SF' },
-        { id: 4, name: '코미디' },
-        { id: 5, name: '로맨스' },
-        { id: 6, name: '스릴러' },
-        { id: 7, name: '공포' },
-        { id: 8, name: '전쟁' },
-        { id: 9, name: '스포츠' },
-        { id: 10, name: '판타지' },
-        { id: 11, name: '음악' },
-        { id: 12, name: '뮤지컬' },
-        { id: 13, name: '멜로' },
-        { id: 14, name: '드라마' },
       ],
       isEmailError: false,
       isPwdError: false,
@@ -132,28 +122,32 @@ export default {
       errorMessage: '',
     }
   },
+  async created() {
+    const result = await getTags()
+    const tmpArr = []
+
+    result.data.forEach(e => {
+      tmpArr.push({
+        id: e.id,
+        name: e.tag,
+      })
+    })
+
+    this.interestOptions = [...tmpArr]
+  },
   watch: {
     username: {
       deep: true,
       handler() {
-        if (!_isValidEmail(this.username)) {
-          this.isEmailError = true
-          this.errorMessage = '정확한 이메일 주소를 입력하세요.'
-        } else {
-          this.isEmailError = false
-        }
+        this.isEmailError = false
+        this.errorMessage = ''
       },
     },
     password: {
       deep: true,
       handler() {
-        if (!_isValidPassword(this.password)) {
-          this.isPwdError = true
-          this.isPwdError =
-            '영문과 특수문자 숫자를 포함하며 8자 이상이여야 합니다.'
-        } else {
-          this.isPwdError = false
-        }
+        this.isPwdError = false
+        this.errorMessage = ''
       },
     },
     passwordCheck: {
@@ -180,6 +174,7 @@ export default {
         if (!_isValidEmail(userData.username)) {
           this.isEmailError = true
           this.errorMessage = '정확한 이메일 주소를 입력하세요.'
+          document.getElementById('username').focus()
           return
         }
 
@@ -187,23 +182,43 @@ export default {
           this.isPwdError = true
           this.isPwdError =
             '영문과 특수문자 숫자를 포함하며 8자 이상이여야 합니다.'
+          document.getElementById('pw').focus()
           return
         }
-        const { data } = await registerUser(userData)
-        this.logMessage = `${data}`
+        // const { data } = await registerUser(userData)
         this.initForm()
+
+        alert('회원가입에 성공하였습니다.')
+        this.$router.push({ name: 'Login' })
       } catch (error) {
-        console.log(error)
+        const errorCode = error.response.status
+
+        if (errorCode === 401) {
+          this.logMessage = '이미 존재하는 회원입니다.'
+        } else if (errorCode === 402) {
+          this.logMessage =
+            '비밀번호는 영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.'
+        } else if (errorCode === 403) {
+          this.logMessage = '이메일 형식을 유지해주세요.'
+        } else if (errorCode === 405) {
+          this.logMessage = '올바른 요청을 해주세요.'
+        } else if (errorCode === 500) {
+          this.logMessage = '서버에 연결할 수 없습니다.'
+        } else console.log(error)
+
+        this.initForm()
       }
     },
     initForm() {
       this.username = ''
       this.password = ''
       this.passwordCheck = ''
+      this.errorMessage = ''
+      this.interests = []
+      this.selected = { id: null, name: null }
       this.isEmailError = false
       this.isPwdError = false
       this.isPwdChkError = false
-      this.errorMessage = ''
     },
     clickDelete(idx) {
       this.interests.splice(idx, 1)
@@ -217,6 +232,7 @@ export default {
         this.interests.push(selection.name)
       }
     },
+    getDropdownValues(keyword) {},
     isEmpty(str) {
       if (typeof str == 'undefined' || str == null || str == '') return true
       else return false

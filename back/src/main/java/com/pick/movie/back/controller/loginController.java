@@ -90,7 +90,7 @@ public class loginController {
     }
 
 
-    @ApiOperation(value = "showtags", notes = "showtags API입니다.")
+    @ApiOperation(value = "showtags", notes = "회원가입 시 선택할 총 태그목록")
     @ApiResponses({
             @ApiResponse(code = 200, message = "[{\"id\":2,\"tag\":\"Action\"},{\"id\":3,\"tag\":\"Adventure\"}]"),
             @ApiResponse(code = 500, message = "서버에러"),
@@ -113,8 +113,6 @@ public class loginController {
 
     @ApiOperation(value = "login", notes = "login API입니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="username", value ="사용자 ID(email)", required = true),
-            @ApiImplicitParam(name="password", value ="비밀번호", required = true),
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -123,14 +121,14 @@ public class loginController {
             @ApiResponse(code = 402, message = "비밀번호는영문과 특수문자 숫자를 포함하며 8자 이상이어야 합니다.")
     })
     @PostMapping("/login")
-    public String login(@RequestBody HttpServletRequest request){
+    public String login(@RequestBody LoginRequestDto loginRequestDto){
         return "스웨거 명세를 위한 api";
     }
 
 
 
     @ApiOperation(value = "reissueAccessToken", notes = "reissueAccessToken API입니다.\n" +
-            "header에  key : token value : {\"jwtAccessToken\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXVuZ21pbjIiLCJpZCI6NCwiZXhwIjoxNjU2NTI0NjE2LCJ1c2VybmFtZSI6InNldW5nbWluMiJ9.ciIX0cXD3ahJIvB4f2GE60n0qRPaE2HQfwqr7nBtBoKiXKCSacaZh-2wKJo_9gXK9KtKUUAtIRh6vtfe0AapuQ\", \"jwtRefreshToken\":\"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXVuZ21pbjIiLCJpZCI6NCwiZXhwIjoxNjU3NzM0MjA2LCJ1c2VybmFtZSI6InNldW5nbWluMiJ9.7K5zMxSlaUb1flbKCLYfuY83QUxnIF5LpjxJSuwKtBwXfvP2z6eN9_dmv3YUuDzEnRJFVT_moXjpagSG39oSiw\"} ")
+            "header에  key : token value : {\"jwtAccessToken\": \"\", \"jwtRefreshToken\":\"\"} ")
     @ApiImplicitParams({
             @ApiImplicitParam(name="jwtAccessToken", value ="만료된 AccessToken", required = true),
             @ApiImplicitParam(name="jwtRefreshToken", value ="RefreshToken", required = true),
@@ -187,9 +185,6 @@ public class loginController {
 
     @ApiOperation(value = "signup", notes = "signup API입니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="username", value ="사용자 ID(email)", required = true),
-            @ApiImplicitParam(name="password", value ="비밀번호", required = true),
-            @ApiImplicitParam(name="tags", value ="태그들", required = true),
     })
     @ApiResponses({
             @ApiResponse(code = 200, message = "{\n" +

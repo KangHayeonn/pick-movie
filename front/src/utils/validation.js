@@ -1,4 +1,7 @@
 // ReDoS 에 취약한 문제 때문에 삭제
+
+/* eslint-disable no-useless-escape */
+
 export const _isValidEmail = email => {
   const regex =
     /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/

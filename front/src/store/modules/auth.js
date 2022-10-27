@@ -1,9 +1,9 @@
-/*
+import Api from '@/api/v1Auth'
 import {
   setAccessToken,
   setRefreshToken,
   clearToken,
-} from '@/plugins/tokenControl'*/
+} from '@/plugins/tokenControl'
 
 const state = {
   userInfo: {
@@ -29,9 +29,27 @@ const mutations = {
 }
 
 const actions = {
-  authLogin({ commit }) {},
-  authLogout({ commit }) {},
-  authSignUp({ commit }) {},
+  async registerUser({ commit }, params) {
+    return Api.v1RegisterUser(params)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  },
+  async loginUser({ commit }, params) {
+    return Api.v1LoginUser(params)
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  },
+  logoutUser({ commit }) {
+    clearToken()
+  },
   getUserInfo({ commit }) {},
 }
 

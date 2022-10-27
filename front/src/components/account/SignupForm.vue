@@ -93,9 +93,12 @@
 </template>
 
 <script>
-import { registerUser, getTags } from '@/api/index'
+import { v1GetTags } from '@/api/v1Movie.js'
+import { createNamespacedHelpers } from 'vuex'
 import Dropdown from 'vue-simple-search-dropdown'
 import { _isValidEmail, _isValidPassword } from '@/utils/validation'
+
+const { mapActions } = createNamespacedHelpers('auth')
 
 export default {
   components: {
@@ -123,7 +126,8 @@ export default {
     }
   },
   async created() {
-    const result = await getTags()
+    const result = await v1GetTags()
+
     const tmpArr = []
 
     result.data.forEach(e => {
@@ -163,6 +167,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['registerUser']),
     async submitForm() {
       try {
         const userData = {
@@ -185,7 +190,8 @@ export default {
           document.getElementById('pw').focus()
           return
         }
-        // const { data } = await registerUser(userData)
+
+        await this.registerUser(userData)
         this.initForm()
 
         alert('회원가입에 성공하였습니다.')

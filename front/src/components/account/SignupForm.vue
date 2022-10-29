@@ -85,7 +85,6 @@
             </Dropdown>
           </div>
           <button type="submit" class="submit-btn signup-btn">회원가입</button>
-          <p>{{ logMessage }}</p>
         </fieldset>
       </form>
     </div>
@@ -93,9 +92,12 @@
 </template>
 
 <script>
-import { registerUser, getTags } from '@/api/index'
+import { v1GetTags } from '@/api/v1Movie.js'
+import { createNamespacedHelpers } from 'vuex'
 import Dropdown from 'vue-simple-search-dropdown'
 import { _isValidEmail, _isValidPassword } from '@/utils/validation'
+
+const { mapActions } = createNamespacedHelpers('auth')
 
 export default {
   components: {
@@ -108,8 +110,6 @@ export default {
       password: '',
       passwordCheck: '',
       interests: [],
-      // log
-      logMessage: '',
       selected: { id: null, name: null },
       filter: '',
       interestOptions: [
@@ -123,7 +123,9 @@ export default {
     }
   },
   async created() {
-    const result = await getTags()
+    this.offOpen()
+    const result = await v1GetTags()
+
     const tmpArr = []
 
     result.data.forEach(e => {
@@ -163,6 +165,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['registerUser', 'offOpen']),
     async submitForm() {
       try {
         const userData = {
@@ -185,7 +188,8 @@ export default {
           document.getElementById('pw').focus()
           return
         }
-        // const { data } = await registerUser(userData)
+
+        await this.registerUser(userData)
         this.initForm()
 
         alert('회원가입에 성공하였습니다.')

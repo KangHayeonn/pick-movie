@@ -14,6 +14,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('auth')
+
 export default {
   name: 'Main',
   components: {},
@@ -21,10 +24,13 @@ export default {
   data() {
     return {}
   },
-  created() {},
+  created() {
+    this.onOpen()
+  },
   computed: {},
   watch: {},
   methods: {
+    ...mapActions(['onOpen']),
     clickSignUp() {
       this.$router.push('/signup')
     },

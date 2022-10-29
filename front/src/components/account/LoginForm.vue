@@ -16,6 +16,9 @@
               autocomplete="off"
             />
           </div>
+          <p v-if="!isUsernameValid" class="validation-text">
+            <span class="warning">정확한 이메일 주소를 입력하세요.</span>
+          </p>
           <div>
             <label for="pw" class="screen_out">pw : </label>
             <input
@@ -28,10 +31,15 @@
               autocomplete="off"
             />
           </div>
+          <p v-if="!isPasswordValid" class="validation-text">
+            <span class="warning">
+              영문과 특수문자 숫자를 포함하며 8자 이상이여야 합니다.
+            </span>
+          </p>
           <button
             type="submit"
             class="submit-btn"
-            :disabled="!isUsernameValid || !password"
+            :disabled="!isUsernameValid || !isPasswordValid"
           >
             로그인
           </button>
@@ -46,7 +54,6 @@
               로그인 정보 저장
             </Checkbox>
           </div>
-          <p>{{ logMessage }}</p>
           <div class="link-wrapper">
             <button type="button" class="btn-link" @click="goSignup">
               회원이 아니신가요?
@@ -59,9 +66,11 @@
 </template>
 
 <script>
-import { loginUser } from '@/api/index'
+import { createNamespacedHelpers } from 'vuex'
 import Checkbox from 'vue-material-checkbox'
 import { _isValidEmail, _isValidPassword } from '@/utils/validation'
+
+const { mapActions } = createNamespacedHelpers('auth')
 
 export default {
   name: 'LoginForm',
@@ -73,42 +82,87 @@ export default {
       // form values
       username: '',
       password: '',
-      // log
-      logMessage: '',
       someVar: false,
+      isEmailError: false,
+      isPwdError: false,
+      errorMessage: '',
     }
+  },
+  created() {
+    this.offOpen()
   },
   computed: {
     isUsernameValid() {
+      if (this.username === '') return true
       return _isValidEmail(this.username)
+    },
+    isPasswordValid() {
+      if (this.password === '') return true
+      return _isValidPassword(this.password)
     },
   },
   watch: {
     someVar: {
       deep: true,
       handler() {
-        console.log(this.someVar)
+        // console.log(this.someVar)
+      },
+    },
+    username: {
+      deep: true,
+      handler() {
+        this.isEmailError = false
+        this.errorMessage = ''
+      },
+    },
+    password: {
+      deep: true,
+      handler() {
+        this.isPwdError = false
+        this.errorMessage = ''
       },
     },
   },
   methods: {
+    ...mapActions(['loginUser', 'offOpen']),
     async submitForm() {
       try {
         const userData = {
           username: this.username,
           password: this.password,
         }
-        const response = await loginUser(userData)
+
+        if (!_isValidEmail(userData.username)) {
+          this.isEmailError = true
+          this.errorMessage = '정확한 이메일 주소를 입력하세요.'
+          document.getElementById('id').focus()
+          return
+        }
+
+        if (!_isValidPassword(userData.password)) {
+          this.isPwdError = true
+          this.isPwdError =
+            '영문과 특수문자 숫자를 포함하며 8자 이상이여야 합니다.'
+          document.getElementById('pw').focus()
+          return
+        }
+
+        await this.loginUser(userData)
         this.initForm()
-        console.log(response)
-        // this.logMessage = `${data}`;
+
+        alert('로그인에 성공하였습니다.')
+        this.$router.push({ name: 'Main' })
       } catch (error) {
         console.log(error)
+        this.initForm()
       }
     },
     initForm() {
       this.username = ''
       this.password = ''
+      this.errorMessage = ''
+      this.isEmailError = false
+      this.isPwdError = false
     },
     goSignup() {
       this.$router.push({ name: 'Signup' })

@@ -1,25 +1,27 @@
 import axios from 'axios'
+import { setInterceptors } from './common/interceptors'
 
-const instance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL,
-  /*baseURL: 'http://192.168.0.67',*/
-})
-
-function callHome() {
-  return instance.get('/api/v1/home')
+// without token
+const createInstance = () => {
+  return axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL,
+    /*baseURL: 'http://192.168.0.67',*/
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  })
 }
 
-function registerUser(userData) {
-  console.log(userData)
-  return instance.post('/api/v1/signup', userData)
+// with token
+const createInstanceWithAuth = () => {
+  const instance = axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  })
+  return setInterceptors(instance)
 }
 
-function loginUser(userData) {
-  return instance.post('/api/v1/login', userData)
-}
-
-function getTags() {
-  return instance.get('/api/v1/showtags')
-}
-
-export { registerUser, loginUser, callHome, getTags }
+export const instance = createInstance()
+export const instanceWithToken = createInstanceWithAuth()

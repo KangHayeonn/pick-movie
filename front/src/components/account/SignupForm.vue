@@ -85,7 +85,6 @@
             </Dropdown>
           </div>
           <button type="submit" class="submit-btn signup-btn">회원가입</button>
-          <p>{{ logMessage }}</p>
         </fieldset>
       </form>
     </div>
@@ -111,8 +110,6 @@ export default {
       password: '',
       passwordCheck: '',
       interests: [],
-      // log
-      logMessage: '',
       selected: { id: null, name: null },
       filter: '',
       interestOptions: [
@@ -126,6 +123,7 @@ export default {
     }
   },
   async created() {
+    this.offOpen()
     const result = await v1GetTags()
 
     const tmpArr = []
@@ -167,7 +165,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['registerUser']),
+    ...mapActions(['registerUser', 'offOpen']),
     async submitForm() {
       try {
         const userData = {

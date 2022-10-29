@@ -6,29 +6,41 @@ import {
 } from '@/plugins/tokenControl'
 
 const state = {
+  isOpen: true,
   userInfo: {
     name: '',
   },
-  token: {
-    accessToken: '',
-  },
+  isToken: false,
 }
 
 const getters = {
+  getIsOpen: state => state.isOpen,
   getUserInfo: state => state.userInfo,
-  getToken: state => state.token,
+  getIsToken: state => state.isToken,
 }
 
 const mutations = {
+  SET_ON_OPEN: (state, payload) => {
+    state.isOpen = payload
+  },
+  SET_OFF_OPEN: (state, payload) => {
+    state.isOpen = payload
+  },
   SET_USER_INFO(state, payload) {
     state.userInfo = payload
   },
-  SET_TOKEN(state, payload) {
-    state.token = payload
+  SET_IS_TOKEN(state, payload) {
+    state.isToken = payload
   },
 }
 
 const actions = {
+  onOpen: ({ commit }) => {
+    commit('SET_ON_OPEN', true)
+  },
+  offOpen: ({ commit }) => {
+    commit('SET_OFF_OPEN', false)
+  },
   async registerUser({ commit }, params) {
     return Api.v1RegisterUser(params)
       .then(response => {
@@ -41,6 +53,9 @@ const actions = {
   async loginUser({ commit }, params) {
     return Api.v1LoginUser(params)
       .then(response => {
+        setAccessToken(response.data.jwtAccessToken)
+        setRefreshToken(response.data.jwtRefreshToken)
+        commit('SET_IS_TOKEN', true)
         return response
       })
       .catch(error => {
@@ -49,6 +64,7 @@ const actions = {
   },
   logoutUser({ commit }) {
     clearToken()
+    commit('SET_IS_TOKEN', false)
   },
   getUserInfo({ commit }) {},
 }

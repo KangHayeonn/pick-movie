@@ -88,6 +88,10 @@ legend {
     font-weight: 600;
     color: $gray-100;
 }
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 .item-choice {
     font-size: 14px;
     color: #e4e4e4;
